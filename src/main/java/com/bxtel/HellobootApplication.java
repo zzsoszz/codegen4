@@ -48,7 +48,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ServletComponentScan
 @EnableAspectJAutoProxy
 @EnableCaching
-@EnableWebMvc
+//@EnableWebMvc
 //@EnableTransactionManagement
 //@EnableRedisHttpSession
 //@EnableWebMvcSecurity
