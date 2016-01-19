@@ -1,0 +1,293 @@
+package com.bxtel;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import javax.servlet.Filter;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.ErrorPage;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurer;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.cache.interceptor.SimpleKeyGenerator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
+//import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import com.bxtel.security5.filter.VFilterChainProxy;
+import com.bxtel.security5.filter.FilterSecurityInterceptorFilter;
+import com.bxtel.security5.filter.LogoutFilter;
+import com.bxtel.security5.filter.MyExceptionTranslationFilter;
+import com.bxtel.security5.filter.RememberMeFiilter;
+import com.bxtel.security5.filter.UsernamePasswordLoginFilter;
+import com.bxtel.security5.filter.VFilterChain;
+
+import dinamica.util.matcher.AntPathRequestMatcher;
+import dinamica.util.matcher.RequestMatcher;
+@Configuration
+public class HellobootConfiguration  implements CachingConfigurer {
+	@Autowired
+    private DataSource dataSource;
+	
+	@Bean
+	public EmbeddedServletContainerFactory servletContainer() {
+	    TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+	    factory.setPort(9000);//119.254.84.182
+	    factory.setSessionTimeout(10, TimeUnit.MINUTES);
+	    //factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notfound.html"));
+	    return factory;
+	}
+	
+	@Autowired
+	private  AutowireCapableBeanFactory beanFactory;
+	
+	
+	@Bean(name="springSecurityFilterChain2")
+	public VFilterChainProxy filterChainProxy() {
+		VFilterChainProxy f=new VFilterChainProxy();
+		Map<RequestMatcher, VFilterChain> filterChainMap = new HashMap<RequestMatcher, VFilterChain>() ;
+		VFilterChain none=new VFilterChain();
+		filterChainMap.put(new AntPathRequestMatcher("/js/**"), none);
+		filterChainMap.put(new AntPathRequestMatcher("/css/**"), none);
+		filterChainMap.put(new AntPathRequestMatcher("/images/**"), none);
+		filterChainMap.put(new AntPathRequestMatcher("/js/**"), none);
+		filterChainMap.put(new AntPathRequestMatcher("/**/*.jsp"),none);
+		VFilterChain v=new VFilterChain();
+		UsernamePasswordLoginFilter  usernamePasswordLoginFilter=new UsernamePasswordLoginFilter();
+		RememberMeFiilter  rememberMeFiilter=new RememberMeFiilter();
+		MyExceptionTranslationFilter  myExceptionTranslationFilter=new MyExceptionTranslationFilter();
+		FilterSecurityInterceptorFilter  filterSecurityInterceptorFilter=new FilterSecurityInterceptorFilter();
+		LogoutFilter  logoutFilter=new LogoutFilter();
+		beanFactory.autowireBean(usernamePasswordLoginFilter);
+		beanFactory.autowireBean(rememberMeFiilter);
+		beanFactory.autowireBean(myExceptionTranslationFilter);
+		beanFactory.autowireBean(filterSecurityInterceptorFilter);
+		v.addFilter(myExceptionTranslationFilter);
+		v.addFilter(rememberMeFiilter);
+		v.addFilter(usernamePasswordLoginFilter);
+		v.addFilter(logoutFilter);
+		v.addFilter(filterSecurityInterceptorFilter);
+		filterChainMap.put(new AntPathRequestMatcher("/**"), v);
+		f.setFilterChainMap(filterChainMap);
+	    return f;
+	}
+	
+	
+	/*
+	 * Spring Cache抽象详解
+	 *http://jinnianshilongnian.iteye.com/blog/2001040
+	 */
+	@Bean
+    @Override
+    public CacheManager cacheManager() {
+        try {
+            net.sf.ehcache.CacheManager ehcacheCacheManager = new net.sf.ehcache.CacheManager(new ClassPathResource("ehcache.xml").getInputStream());
+            EhCacheCacheManager cacheCacheManager = new EhCacheCacheManager(ehcacheCacheManager);
+            return cacheCacheManager;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+	
+    @Bean
+    @Override
+    public KeyGenerator keyGenerator() {
+        return new SimpleKeyGenerator();
+    }
+
+    @Bean  
+    @Override  
+    public CacheResolver cacheResolver() {  
+        return new MyCacheResolver();  
+    }
+
+	@Override  
+    public CacheErrorHandler errorHandler() {  
+        return new CacheErrorHandler() {  
+            @Override  
+            public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {  
+                System.out.println("cache get error");  
+            }  
+            @Override  
+            public void handleCachePutError(RuntimeException exception, Cache cache, Object key, Object value) {  
+                System.out.println("cache put error");  
+            }  
+  
+            @Override  
+            public void handleCacheEvictError(RuntimeException exception, Cache cache, Object key) {  
+                System.out.println("cache evict error");  
+            }  
+  
+            @Override  
+            public void handleCacheClearError(RuntimeException exception, Cache cache) {  
+                System.out.println("cache clear error");  
+            }  
+        };  
+    }  
+	
+}
+
+//
+//@Bean
+//public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
+//  ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+//  registration.addUrlMappings("/hirest/*");
+//  return registration;
+//}
+//
+//@Bean
+//public FilterRegistrationBean userInsertingMdcFilterRegistrationBean() {
+//    FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+//    UserInsertingMdcFilter userFilter = new UserInsertingMdcFilter();
+//    registrationBean.setFilter(userFilter);
+//    registrationBean.add
+//    registrationBean.setOrder(Integer.MAX_VALUE);
+//    return registrationBean;
+//}
+
+//@Bean
+//public ServletRegistrationBean servletRegistrationBean() {
+//  return new ServletRegistrationBean(new SystemInitServlet(), "/signin");
+//}
+
+
+//private void printStacks() {
+//	StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+//	System.out.println("========================");
+//
+//	for (int i = 0; i < elements.length; i++) {
+//		System.out.println(elements[i]);
+//	}
+//}
+
+//http://blog.sina.com.cn/s/blog_72ef7bea0102w8a2.html
+//[Spring Boot] 使用多个Servlet [此博文包含图片] (2015-10-28 06:07:53)
+//转载
+//▼
+//标签： spring boot multiple servlet 	分类： Web.JavaEE
+//
+//当使用Spring boot的嵌入式servlet容器时，可以通过Spring bean或扫描Servlet组件的方式注册Servlet、Filter和Servlet规范的所有监听器(例如HttpSessionListener)。
+//
+//    当urlMapping不是很复杂时，可以通过ServletRegistrationBean、 FilterRegistrationBean 和 ServletListenerRegistrationBean获得完整控制。如果bean实现了ServletContextInitializer接口的话则可以直接注册。
+//    当使用@ServletComponentScan扫描Servlet组件时，Servlet、过滤器和监听器可以是通过@WebServlet、@WebFilter和@WebListener自动注册
+//
+//    
+//    
+//@Autowired
+//EntityManagerFactory emf;
+//
+//@Autowired
+//PlatformTransactionManager platformTransactionManager;
+//
+//
+
+
+//@Bean(name = "transactionManager")
+//public PlatformTransactionManager transactionManager() {
+//JpaTransactionManager tm =   new JpaTransactionManager();
+//tm.setEntityManagerFactory(emf);
+//tm.setDataSource(dataSource);
+//return tm;
+//}
+//
+//
+//@Bean(name = "transactionInterceptor")
+//public TransactionInterceptor transactionInterceptor() {
+//org.springframework.transaction.interceptor.TransactionInterceptor tm =   new org.springframework.transaction.interceptor.TransactionInterceptor();
+//org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource nameMatchTransactionAttributeSource =   new org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource();
+//tm.setTransactionManager(platformTransactionManager);
+//return tm;
+//}
+
+//@Bean
+//public User getPerson()
+//{
+//	return new User("qingtian","123456");
+//}
+//
+//@Bean
+//public FilterRegistrationBean mdcFilterRegistrationBean() {
+//	FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+//	MDCInsertingServletFilter loggingFilter = new MDCInsertingServletFilter();
+//	registrationBean.setFilter(loggingFilter);
+//	registrationBean.setOrder(Integer.MAX_VALUE - 1);
+//	return registrationBean;
+//}
+//@Bean(name = "entityManagerFactory")
+//public LocalContainerEntityManagerFactoryBean emf() {
+//  LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+//  emf.setDataSource(dataSource);
+//  emf.setPackagesToScan(
+//      new String[] {"your.package"});
+//  emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+//  return emf;
+//}
+//
+//@Autowired
+//EntityManagerFactory emf;
+//@Bean(name = "transactionManager")
+//public PlatformTransactionManager transactionManager() {
+//  JpaTransactionManager tm = 
+//      new JpaTransactionManager();
+//      tm.setEntityManagerFactory(emf);
+//      tm.setDataSource(dataSource);
+//  return tm;
+//}
+//
+
+//http://stackoverflow.com/questions/26286736/how-to-verify-spring-aspecj-transactions
+//@Configuration
+//@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+//@ComponentScan
+//@EnableAsync
+//@EnableScheduling
+//@EnableEntityLinks
+//@EnableAspectJAutoProxy
+//@EnableApiResources(apiPrefix = "")
+//@EnableJpaRepositories(transactionManagerRef = "transactionManager")
+//@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
+//@EnableConfigurationProperties
+//@EnableAutoConfiguration
+//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+//@EnableWebSocketMessageBroker
+//@Slf4j
+
+//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+//@EnableAutoConfiguration
+//@ComponentScan(basePackages = { "com.geopro" })
+//@EnableJpaRepositories(basePackages = { "com.geopro.repositories" })
+//@EntityScan(basePackages = { "com.geopro.entities" })
+//@EnableTransactionManagement(proxyTargetClass=true)//(mode=AdviceMode.ASPECTJ)//
+//public class AppConfig {
+//    @Bean
+//    public HibernateJpaSessionFactoryBean sessionFactory(EntityManagerFactory emf) {
+//         HibernateJpaSessionFactoryBean factory = new HibernateJpaSessionFactoryBean();
+//         factory.setEntityManagerFactory(emf);
+//         return factory;
+//    }
+//}

@@ -25,12 +25,25 @@ import org.apache.commons.logging.LogFactory;
 @Controller
 @RequestMapping(value = "/sms")
 public class SmsController extends MultiActionController {
-    
+    //org.springframework.web.servlet.view.InternalResourceViewResolver
+	//org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping
+	//WebMvcAutoConfiguration
+	//AnnotationMethodHandlerAdapter
+	//SimpleControllerHandlerAdapter
+	//AnnotationMethodHandlerAdapter
+	//org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+	//WebMvcConfigurationSupport
 	private static final Log logger = LogFactory.getLog(SmsController.class);
     
+//	@RequestMapping("/")
+//	public String index(Map<String, Object> model) {
+//		return "index";
+//	}
+//	
 	@RequestMapping("/")
-	public String index(Map<String, Object> model) {
-		return "index";
+	public ModelAndView index(Map<String, Object> model) {
+		ModelAndView mav=new ModelAndView();
+		return mav;
 	}
 	
     @RequestMapping(value = "search")
