@@ -35,8 +35,6 @@ import com.bxtel.security5.auth.exceiption.UserNotLogin;
 
 public class FilterSecurityInterceptorFilter extends GenericFilterBean  {
 		
-		private RequestCache requestCache = new HttpSessionRequestCache();
-		
 		private static final Log logger = LogFactory.getLog(FilterSecurityInterceptorFilter.class);
 		
 		//需要保护的资源

@@ -65,6 +65,7 @@ public class MyExceptionTranslationFilter  extends GenericFilterBean{
             }
             if (ase != null) {
                 handleSpringSecurityException(request, response, chain, ase);
+                throw new RuntimeException(ex);
             } else {
                 // Rethrow ServletExceptions and RuntimeExceptions as-is
                 if (ex instanceof ServletException) {
@@ -77,6 +78,7 @@ public class MyExceptionTranslationFilter  extends GenericFilterBean{
                 // as we've already covered all the possibilities for doFilter
                 throw new RuntimeException(ex);
             }
+            
         }
     }
     

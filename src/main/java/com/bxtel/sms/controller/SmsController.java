@@ -22,6 +22,8 @@ import org.apache.commons.logging.LogFactory;
 //com/bxtel/sms/doupdate.do
 //com/bxtel/sms/dodelete.do
 //http://localhost:8080/sms/search
+//@Controller("/")
+
 @Controller
 @RequestMapping(value = "/sms")
 public class SmsController extends MultiActionController {
@@ -33,6 +35,7 @@ public class SmsController extends MultiActionController {
 	//AnnotationMethodHandlerAdapter
 	//org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 	//WebMvcConfigurationSupport
+	//SimpleUrlHandlerMapping
 	private static final Log logger = LogFactory.getLog(SmsController.class);
     
 //	@RequestMapping("/")
