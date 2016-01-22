@@ -1,4 +1,7 @@
 package com.bxtel.commons;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import javax.validation.constraints.NotNull;
@@ -6,6 +9,10 @@ import javax.validation.constraints.Pattern;
 //
 //import com.bxtel.user.model.User;
 //import com.bxtel.user.vo.RegistInfo;
+
+import com.bxtel.user.model.User;
+import com.bxtel.user.vo.RegistInfo;
+import com.bxtel.user.vo.YzmInfo;
 
 import dinamica.coder.RSACoderTest;
 import dinamica.util.JsonHelper;
@@ -67,16 +74,43 @@ public class Request<T> {
 //		System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
 		
 		
-//		Request<RegistInfo> req=new Request<RegistInfo>();
-//		RegistInfo data=new RegistInfo();
-//		User u=new User();
-//		data.setYzm("123456");
-//		data.setUser(u);
-//		req.setData(data);
-//		System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
+		Request<RegistInfo> req=new Request<RegistInfo>();
+		RegistInfo data=new RegistInfo();
+		User u=new User();
+		u.setMobile("13730666347");
+		u.setPassword("123456");
+		u.setType("1");
+		data.setYzm("123456");
+		data.setUser(u);
+		req.setData(data);
+		System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
 		
-		 Request<String>  req=new Request<String>();
-		 req.setData("13730666347");
-		 System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
+		
+//		 Request<String>  req=new Request<String>();
+//		 req.setData("13730666347");
+//		 System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
+//		 
+		
+//		 Request<YzmInfo>  req=new Request<YzmInfo>();
+//		 YzmInfo y=new YzmInfo();
+//		 y.setMobile("13730666347");
+//		 y.setYzm("333");
+//		 req.setData(y);
+//		 System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));
+		 
+		 
+//		 Request<SearchData>  search=new  Request<SearchData>();
+//		 SearchData d=new SearchData();
+//		 d.setPage(1);
+//		 d.setPagesize(20);
+//		 Map<String, Object> s=new HashMap<String, Object> ();
+//		 s.put("type","准备");
+//		 d.setSearch(s);
+//		 Map<String, Object> sortmap=new HashMap<String, Object> ();
+//		 sortmap.put("type","准备");
+//		 d.setSearch(s);
+//		 d.setSort(sortmap);
+//		 search.setData(d);
+//		 System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(search));
 	}
 }

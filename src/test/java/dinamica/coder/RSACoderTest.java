@@ -76,6 +76,9 @@ public class RSACoderTest {
 		byte[] decodedData = RSACoder.encryptByPublicKey(data.getBytes(), publickey);
 		return  new Base64().encodeAsString(decodedData);
 	}
+	
+	
+	
 	public  static String decode(String data) throws Exception
 	{
 		String privatekey="MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBANUsMEAoDX9rQithfMCEyqZ/hoWTayVKixWknPNce2NKPdp2S7AuTlH71FORw1CaG5zURD3yEmJvfVnHL4xzzfkwofO2Com/2Z6vZuSQ56faROYE3zw/a38trZAH/DIyuyj4fTpdxQuBOdAW0EftZM1VZpqwDU8ShB1xqNPoOAzLAgMBAAECgYEApygVVdmSa/3xTw8MwfHe7pxFIe0tMXq4gWopYHN+lacbxXjJdQd6hrMQFc/Q9h1B1cJlGKX/YIzIIGQeluYf9f5aUcsxATaC01JZ6k0hf9YpJmZGQeCkgM6mixdfMUhdOJZwzbbpAT8vwZKYvZ6q4mgW0dzUUonOiU2Teo7AF6ECQQDylyfvJ1uzc9YRnGtikgDilcoF5D9tQFFPGtw5dVMQRdilPZ1eJU2/2I2rKPSLfShgONOxqvS3f2ZB11j8H0WDAkEA4PS/QX0L/0k6/vvqp5h4LEEGa0Fdm3hBgsHMg/ZOCQe0rKtxPgntKJT5R7mySw6f1PZVU8bA54L9zd4sIixBGQJBANOuqI8cNf2ST7LQXjgGFTWi5UVc1SfdHtY7Jv4QbaneeNw/tqknPf/w1DYNp85sKSZFkBwRhDb2uWEsq55dH0cCQQDEJoTyHJAufHM1zQGyO29l3xkywp9Vpgkxc7zZwBYRJ6fx+9fVaaBih2vJj/EYI1tYvaZvU1n3RK/8J2LCNWZZAkEAntdqpTa80QR5qqQMF9sKURF7gH8cn1XrorTDQ6GcMmRTOyXCR8xokOSMTXeypwHkEMozq21az0i0GflnkZTP4w==";
@@ -84,8 +87,11 @@ public class RSACoderTest {
 		return outputStr;
 	}
 	public static void main(String[] args) throws Exception {
-		System.out.println(RSACoderTest.encode("hello"));;
-		System.out.println(RSACoderTest.decode(RSACoderTest.encode("hello")));;
+		//{"imsi":null,"timestamp":null,"version":null,"data":{"yzm":"808321","user":{"id":0,"type":null,"mobile":"18982063638","password":"jq9WrF23b7GTEpqCZESq9IPQomgFLMVC+mY0Lx63/wNNqxcHqnEo9wqbY8MW ZRNQgijIzmSpQzzWoRxBW5dcQr0WqSLCH7+iKKj1TeH5eqtgVQB01F6kgSYM iCtDy0NW9ie3lGgg7KeQ2UN5IpiM4fwo/+ppnY7UuoVv1UiFhYo=","name":null,"email":null,"companyid":null,"accesscount":null,"workyear":null,"school":null,"goodat":null,"image1":null,"image2":null,"image3":null,"image4":null,"image5":null,"opencompany":null,"openid":null}}}
+		
+//		System.out.println(new Base64().encodeAsString("123456".getBytes()));
+		System.out.println(RSACoderTest.encode("123456"));;
+		//System.out.println(RSACoderTest.decode(RSACoderTest.encode("hello")));;
 //		String publickey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLDBAKA1/a0IrYXzAhMqmf4aFk2slSosVpJzzXHtjSj3adkuwLk5R+9RTkcNQmhuc1EQ98hJib31Zxy+Mc835MKHztgqJv9mer2bkkOen2kTmBN88P2t/La2QB/wyMrso+H06XcULgTnQFtBH7WTNVWaasA1PEoQdcajT6DgMywIDAQAB";
 //		String privatekey="MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBANUsMEAoDX9rQithfMCEyqZ/hoWTayVKixWknPNce2NKPdp2S7AuTlH71FORw1CaG5zURD3yEmJvfVnHL4xzzfkwofO2Com/2Z6vZuSQ56faROYE3zw/a38trZAH/DIyuyj4fTpdxQuBOdAW0EftZM1VZpqwDU8ShB1xqNPoOAzLAgMBAAECgYEApygVVdmSa/3xTw8MwfHe7pxFIe0tMXq4gWopYHN+lacbxXjJdQd6hrMQFc/Q9h1B1cJlGKX/YIzIIGQeluYf9f5aUcsxATaC01JZ6k0hf9YpJmZGQeCkgM6mixdfMUhdOJZwzbbpAT8vwZKYvZ6q4mgW0dzUUonOiU2Teo7AF6ECQQDylyfvJ1uzc9YRnGtikgDilcoF5D9tQFFPGtw5dVMQRdilPZ1eJU2/2I2rKPSLfShgONOxqvS3f2ZB11j8H0WDAkEA4PS/QX0L/0k6/vvqp5h4LEEGa0Fdm3hBgsHMg/ZOCQe0rKtxPgntKJT5R7mySw6f1PZVU8bA54L9zd4sIixBGQJBANOuqI8cNf2ST7LQXjgGFTWi5UVc1SfdHtY7Jv4QbaneeNw/tqknPf/w1DYNp85sKSZFkBwRhDb2uWEsq55dH0cCQQDEJoTyHJAufHM1zQGyO29l3xkywp9Vpgkxc7zZwBYRJ6fx+9fVaaBih2vJj/EYI1tYvaZvU1n3RK/8J2LCNWZZAkEAntdqpTa80QR5qqQMF9sKURF7gH8cn1XrorTDQ6GcMmRTOyXCR8xokOSMTXeypwHkEMozq21az0i0GflnkZTP4w==";
 //		String inputStr = "sign";

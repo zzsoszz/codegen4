@@ -61,20 +61,20 @@ public class Guid {
         //去掉“-”符号 
         return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24); 
     }
-//	
-//	public  static String  genRandom(int num)
-//	{
-//		StringBuffer result=new StringBuffer("");
-//		Random rd = new Random();
-//		for(int i=0;i<num;i++)
-//		{
-//			result.append(rd.nextInt(10) + "");
-//		}
-//		return result.toString();
-//	}
-//	
 	
 	public  static String  genRandom(int num)
+	{
+		StringBuffer result=new StringBuffer("");
+		Random rd = new Random();
+		for(int i=0;i<num;i++)
+		{
+			result.append(rd.nextInt(10) + "");
+		}
+		return result.toString();
+	}
+	
+	
+	public  static String  genRandom2(int num)
 	{
 		StringBuffer one=new StringBuffer("1");
 		for(int i=0;i<num;i++)

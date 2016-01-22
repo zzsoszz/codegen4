@@ -3,12 +3,17 @@ import com.bxtel.user.bo.UserBO;
 
 import com.bxtel.user.model.User;
 import com.bxtel.user.vo.RegistInfo;
+import com.bxtel.user.vo.YzmInfo;
 import com.bxtel.commons.Request;
 import com.bxtel.commons.Response;
 import com.bxtel.commons.SearchData;
 import com.bxtel.exception.BusinessException;
 
+import dinamica.coder.MD5Helper;
+import dinamica.coder.RSACoderTest;
 import dinamica.guid.Guid;
+import dinamica.util.JsonHelper;
+
 import com.bxtel.security5.auth.IAuthenticationManager;
 import com.bxtel.security5.auth.IAuthenticationSuccessHandler;
 import java.util.*;
@@ -51,16 +56,17 @@ public class UserController extends MultiActionController {
 	private IAuthenticationSuccessHandler successHandler = null;
 	@Autowired
 	CacheManager cacheManager;
-//	
-//	DispatcherServlet aa;
-//	
+
     @RequestMapping(value = "docreate")
     @ResponseBody
     public Response docreate(@RequestBody Request<RegistInfo> req,HttpServletRequest request, HttpServletResponse response)  throws Exception, BusinessException {
     	Response resp=new Response();
     	try
     	{
-    		ValueWrapper yzm=cacheManager.getCache("yzm").get("mobile");
+    		System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));;
+    		String pwdmd5=MD5Helper.md5(RSACoderTest.decode(req.getData().getUser().getPassword()));
+    		req.getData().getUser().setPassword(pwdmd5);
+    		ValueWrapper yzm=cacheManager.getCache("yzm").get(req.getData().getUser().getMobile());
     		if(!req.getData().getYzm().equals(yzm.get()))
     		{
     			resp.setReturncode("00000002");
@@ -71,13 +77,14 @@ public class UserController extends MultiActionController {
     		resp.setReturnmsg("处理成功!");
     	}catch(Exception ex)
     	{
+    		ex.printStackTrace();
     		resp.setReturncode("00000001");
-    		resp.setReturncode("系统异常");
+    		resp.setReturnmsg("系统异常");
     	}
     	return resp;
 	}
     
-    
+    //
     @RequestMapping(value = "dosendyzm")
     @ResponseBody
     public Response dosendyzm(@RequestBody Request<String> req,HttpServletRequest request, HttpServletResponse response)  throws Exception, BusinessException {
@@ -85,17 +92,53 @@ public class UserController extends MultiActionController {
     	try
     	{
     		String yzm=Guid.genRandom(6);
-    		cacheManager.getCache("yzm").put("mobile",yzm);
+    		System.out.println("yzm:"+yzm);
+    		cacheManager.getCache("yzm").put(req.getData(),yzm);
     		bo.sendyzm(req.getData(),yzm);
     		resp.setReturncode("00000000");
     		resp.setReturnmsg("处理成功!");
     	}catch(Exception ex)
     	{
+    		ex.printStackTrace();
     		resp.setReturncode("00000001");
     		resp.setReturncode("系统异常");
     	}
     	return resp;
 	}
+    
+    
+    @RequestMapping(value = "docheckyzm")
+    @ResponseBody
+    public Response docheckyzm(@RequestBody Request<YzmInfo> req,HttpServletRequest request, HttpServletResponse response)  throws Exception, BusinessException {
+    	Response resp=new Response();
+    	try
+    	{
+    		ValueWrapper val = cacheManager.getCache("yzm").get(req.getData().getMobile());
+    		if(val==null)
+    		{
+        		throw new BusinessException("验证码不正确!");
+    		}
+    		String oldyzm=(String) val.get();
+    		if(oldyzm.equals(req.getData().getYzm()))
+    		{
+    			resp.setReturncode("00000000");
+        		resp.setReturnmsg("验证码成功!");
+    			return resp;
+    		}
+    	}catch(BusinessException ex)
+    	{
+    		resp.setReturncode("00000002");
+    		resp.setReturnmsg(ex.getMessage());
+    	}
+    	catch(Exception ex)
+    	{
+    		ex.printStackTrace();
+    		resp.setReturncode("00000001");
+    		resp.setReturnmsg("系统异常");
+    	}
+    	return resp;
+	}
+    
     
     /*
      * search_LIKE_title

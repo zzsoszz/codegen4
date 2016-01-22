@@ -39,7 +39,6 @@ public class SearchFilter {
 			if (StringUtils.isBlank((String) value)) {
 				continue;
 			}
-
 			// 拆分operator与filedAttribute
 			String[] names = StringUtils.split(key, "_");
 			if (names.length != 2) {

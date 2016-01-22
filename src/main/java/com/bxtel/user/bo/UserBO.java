@@ -61,7 +61,7 @@ public class UserBO
 	public User add(User data) {
 		return dao.save(data);
 	}
-	
+	//{"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"100596652550^1100992116693","success":true},"request_id":"ze2lrcsmoykd"}}
 	public void sendyzm(String mobile,String yzm) throws ApiException {
 		TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest","23283260", "9ea5be14644abf8a82e2cdac347497f5");
 		AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();

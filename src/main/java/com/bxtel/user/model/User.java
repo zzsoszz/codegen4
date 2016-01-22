@@ -20,6 +20,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
+	@NotNull
 	private String type;//1.买家  2.设计师
 	
 	@NotNull

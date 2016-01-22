@@ -67,6 +67,7 @@ public class KnowledgeController extends MultiActionController {
         	resp.setData(page);
     	}catch(Exception ex)
 		{
+    		ex.printStackTrace();
 			resp.setReturncode("00000001"); 
 			resp.setReturnmsg("系统异常!");
 		}
