@@ -1,17 +1,16 @@
 package com.bxtel.user.controller;
 import com.bxtel.user.bo.UserBO;
+
 import com.bxtel.user.model.User;
 import com.bxtel.user.vo.RegistInfo;
-
-import dinamica.guid.Guid;
-
 import com.bxtel.commons.Request;
 import com.bxtel.commons.Response;
 import com.bxtel.commons.SearchData;
 import com.bxtel.exception.BusinessException;
+
+import dinamica.guid.Guid;
 import com.bxtel.security5.auth.IAuthenticationManager;
 import com.bxtel.security5.auth.IAuthenticationSuccessHandler;
-
 import java.util.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.cache.Cache.ValueWrapper;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springside.modules.web.Servlets;
 import org.apache.commons.logging.Log;

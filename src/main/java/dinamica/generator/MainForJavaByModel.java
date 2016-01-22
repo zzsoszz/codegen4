@@ -1,18 +1,14 @@
 package dinamica.generator;
 
 import java.io.File;
-
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import dinamica.classloader.ClassScan;
 import dinamica.util.FileHelper;
 import freemarker.template.Configuration;
@@ -22,7 +18,9 @@ import freemarker.template.TemplateException;
 
 public class MainForJavaByModel {
 	public static void main(String[] args) {
-		gen_java("com.bxtel.sms.model");
+		gen_java("com.bxtel.cases.model");
+		gen_java("com.bxtel.company.model");
+		gen_java("com.bxtel.knowledge.model");
 	}
 	
     public  static void gen_java(String modelpackagename) {
@@ -40,7 +38,7 @@ public class MainForJavaByModel {
 		    	root.put("packageName",basePackageName);//生成java类的包名
 		    	root.put("packageNameForHttp",basePackageNamePath);
 		    	root.put("setupdir",basePackageNamePath);//生成action的路径
-		        String baseDIR = FileHelper.getFilePath(MainForJavaByModel.class)+"../../../demo/v1.0.1";
+		        String baseDIR = FileHelper.getFilePath(MainForJavaByModel.class)+"../../../../sourcetemplate/v1.0.1";
 		        //    找扩展名为txt的文件   
 		        String fileName = "*.ftl";
 		        List resultList = new ArrayList();

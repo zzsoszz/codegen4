@@ -25,10 +25,10 @@ import java.util.Map;
 @Service
 public class UserBO
 {
+	private static final Log logger = LogFactory.getLog(UserBO.class);
+	
 	@Autowired
 	public UserRepository dao;
-	
-	private static final Log logger = LogFactory.getLog(UserBO.class);
 	
 	@Cacheable(value="user")
 	public List<User> search(Map<String, Object> searchParams,Map<String, Object> sortParams)
