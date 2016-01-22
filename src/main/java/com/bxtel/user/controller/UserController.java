@@ -64,7 +64,8 @@ public class UserController extends MultiActionController {
     	try
     	{
     		System.out.println(JsonHelper.getObjectMapperInstance().writeValueAsString(req));;
-    		String pwdmd5=MD5Helper.md5(RSACoderTest.decode(req.getData().getUser().getPassword()));
+    		//RSACoderTest.decode()
+    		String pwdmd5=MD5Helper.md5(req.getData().getUser().getPassword());
     		req.getData().getUser().setPassword(pwdmd5);
     		ValueWrapper yzm=cacheManager.getCache("yzm").get(req.getData().getUser().getMobile());
     		if(!req.getData().getYzm().equals(yzm.get()))
