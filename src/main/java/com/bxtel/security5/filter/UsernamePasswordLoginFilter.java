@@ -2,6 +2,8 @@ package com.bxtel.security5.filter;
 
 import java.io.IOException;
 
+
+
 import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -19,7 +21,7 @@ import com.bxtel.user.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import dinamica.coder.MD5Helper;
-import dinamica.coder.RSACoderTest;
+import dinamica.coder.RSACoder;
 import dinamica.coder.ThreeDesHelper2;
 import dinamica.util.JsonHelper;
 
@@ -54,7 +56,7 @@ public class UsernamePasswordLoginFilter extends GenericFilterBean {
 			}
 			try
 			{
-				password=MD5Helper.md5(RSACoderTest.decode(password));
+				password=MD5Helper.md5(RSACoder.decode(password));
 			} catch (Exception e) {
 				throw new UsernameNotFoundException("password is invalid");
 			}

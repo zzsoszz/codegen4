@@ -1,5 +1,6 @@
 package com.bxtel.commons;
 import java.util.HashMap;
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -13,8 +14,6 @@ import javax.validation.constraints.Pattern;
 import com.bxtel.user.model.User;
 import com.bxtel.user.vo.RegistInfo;
 import com.bxtel.user.vo.YzmInfo;
-
-import dinamica.coder.RSACoderTest;
 import dinamica.util.JsonHelper;
 
 public class Request<T> {

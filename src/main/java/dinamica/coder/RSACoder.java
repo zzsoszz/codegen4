@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.crypto.Cipher;
 
+import org.apache.commons.codec.binary.Base64;
+
 /**
  * RSA安全编码组件
  * 
@@ -255,4 +257,20 @@ public abstract class RSACoder extends Coder {
 		keyMap.put(PRIVATE_KEY, privateKey);
 		return keyMap;
 	}
+	
+	public  static String encode(String data) throws Exception
+	{
+		String publickey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLDBAKA1/a0IrYXzAhMqmf4aFk2slSosVpJzzXHtjSj3adkuwLk5R+9RTkcNQmhuc1EQ98hJib31Zxy+Mc835MKHztgqJv9mer2bkkOen2kTmBN88P2t/La2QB/wyMrso+H06XcULgTnQFtBH7WTNVWaasA1PEoQdcajT6DgMywIDAQAB";
+		byte[] decodedData = RSACoder.encryptByPublicKey(data.getBytes(), publickey);
+		return  new Base64().encodeAsString(decodedData);
+	}
+	
+	public  static String decode(String data) throws Exception
+	{
+		String privatekey="MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBANUsMEAoDX9rQithfMCEyqZ/hoWTayVKixWknPNce2NKPdp2S7AuTlH71FORw1CaG5zURD3yEmJvfVnHL4xzzfkwofO2Com/2Z6vZuSQ56faROYE3zw/a38trZAH/DIyuyj4fTpdxQuBOdAW0EftZM1VZpqwDU8ShB1xqNPoOAzLAgMBAAECgYEApygVVdmSa/3xTw8MwfHe7pxFIe0tMXq4gWopYHN+lacbxXjJdQd6hrMQFc/Q9h1B1cJlGKX/YIzIIGQeluYf9f5aUcsxATaC01JZ6k0hf9YpJmZGQeCkgM6mixdfMUhdOJZwzbbpAT8vwZKYvZ6q4mgW0dzUUonOiU2Teo7AF6ECQQDylyfvJ1uzc9YRnGtikgDilcoF5D9tQFFPGtw5dVMQRdilPZ1eJU2/2I2rKPSLfShgONOxqvS3f2ZB11j8H0WDAkEA4PS/QX0L/0k6/vvqp5h4LEEGa0Fdm3hBgsHMg/ZOCQe0rKtxPgntKJT5R7mySw6f1PZVU8bA54L9zd4sIixBGQJBANOuqI8cNf2ST7LQXjgGFTWi5UVc1SfdHtY7Jv4QbaneeNw/tqknPf/w1DYNp85sKSZFkBwRhDb2uWEsq55dH0cCQQDEJoTyHJAufHM1zQGyO29l3xkywp9Vpgkxc7zZwBYRJ6fx+9fVaaBih2vJj/EYI1tYvaZvU1n3RK/8J2LCNWZZAkEAntdqpTa80QR5qqQMF9sKURF7gH8cn1XrorTDQ6GcMmRTOyXCR8xokOSMTXeypwHkEMozq21az0i0GflnkZTP4w==";
+		byte[] decodedData = RSACoder.decryptByPrivateKey(new Base64().decodeBase64(data.getBytes()), privatekey);
+		String outputStr = new String(decodedData);
+		return outputStr;
+	}
+	
 }
