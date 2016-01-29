@@ -40,8 +40,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAutoConfiguration(
 		exclude = {
 		org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
-		org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration.class
-		,org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.class
+		org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration.class,
+		org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.class
 		}
 )
 @EnableScheduling

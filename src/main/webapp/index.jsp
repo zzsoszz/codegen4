@@ -1,5 +1,9 @@
 <html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+
 <body>
-<h2>Hello World!</h2>
+	<a href="jsp/index.jsp">主页</a>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -29,6 +31,12 @@ import web.core.CP_InitializingInterceptor;
 import web.core.CP_PropertyEditorRegistrar;
 import web.core.CP_SimpleMappingExceptionResolver;
 
+
+/*
+ * Spring Boot 静态资源处理
+ * http://blog.csdn.net/isea533/article/details/50412212
+ * 
+ */
 @Configuration
 @EnableWebMvc
 public class MvcConfig extends WebMvcConfigurationSupport {
@@ -175,11 +183,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
       </p>                                                                                                                                                                                                                       
      * @param registry                                                                                                      
      */  
-	@Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-		logger.info("addResourceHandlers");
-        registry.addResourceHandler("/assets/**").addResourceLocations("/WEB-INF/assets/");
-    }
+//	@Override
+//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		logger.info("addResourceHandlers");
+//        registry.addResourceHandler("/assets/**").addResourceLocations("/WEB-INF/assets/");
+//    }
     
 	/**                                                          
 	* 描述 : <文件上传处理器>. <br> 
@@ -242,7 +250,13 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 		initializer.setPropertyEditorRegistrar(register);
 		return initializer;
 	}
-    
+	
+	@Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/jsp/index.jsp");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        super.addViewControllers(registry);
+    }
     
 }
 

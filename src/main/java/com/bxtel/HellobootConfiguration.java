@@ -1,6 +1,7 @@
 package com.bxtel;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.bxtel.security5.filter.VFilterChainProxy;
 import com.bxtel.security5.filter.FilterSecurityInterceptorFilter;
@@ -60,6 +62,18 @@ public class HellobootConfiguration  implements CachingConfigurer {
 	    factory.setPort(9000);//119.254.84.182
 	    factory.setSessionTimeout(10, TimeUnit.MINUTES);
 	    //factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notfound.html"));
+//	    
+//	    TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+//
+//	    TomcatContextCustomizer contextCustomizer = new TomcatContextCustomizer() {
+//	        @Override
+//	        public void customize(Context context) {
+//	            context.addWelcomeFile("/<new welcome file>");
+//	        }
+//	    };
+//	    factory.addContextCustomizers(contextCustomizer);
+//
+//	    
 	    return factory;
 	}
 	
