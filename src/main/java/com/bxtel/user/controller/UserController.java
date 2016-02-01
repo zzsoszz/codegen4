@@ -170,6 +170,47 @@ public class UserController extends MultiActionController {
 	}
     
     
+    @RequestMapping("/getReward")
+	@ResponseBody
+	public Response<String> getReward()  
+	{
+		Response<String> resp=new Response<String>();
+		int num=(int)(Math.random()*5000);
+		if(num>0 && num<=250)
+		{
+			System.out.println("恭喜您中奖了！"+num+" :500");
+			resp.setData("1");
+			return resp;
+		}
+		if(num>250 && num<=750)
+		{
+			System.out.println("恭喜您中奖了！"+num+" :100");
+			resp.setData("2");
+			return resp;
+		}
+		if(num>750&& num<=1250)
+		{
+			System.out.println("恭喜您中奖了！"+num+" :50");
+			resp.setData("3");
+			return resp;
+		}
+		if(num>1250 && num<=1750)
+		{
+			System.out.println("恭喜您中奖了！"+num+" :10");
+			resp.setData("4");
+			return resp;
+		}
+		if(num>1750 && num<=2250)
+		{
+			System.out.println("恭喜您中奖了！"+num+" :5");
+			resp.setData("5");
+			return resp;
+		}
+		resp.setData("0");
+		return resp;
+	}
+    
+    
 //    
 //    @RequestMapping
 //    public ModelAndView showadd(Sms model,HttpServletRequest request, 
