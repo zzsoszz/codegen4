@@ -13,7 +13,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 //import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 //import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 //import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
@@ -32,22 +32,23 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * 
  */
 //@ImportResource(value="classpath:applicationContext-bean.xml")
-//TomcatEmbeddedServletContainer
+//@TomcatEmbeddedServletContainer
 //@SpringBootApplication
 @Configuration
 @ComponentScan
 //@EnableAutoConfiguration
 @EnableAutoConfiguration(
 		exclude = {
-		org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
-		org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration.class,
-		org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.class
+			org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
+			org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration.class,
+			org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.class
 		}
 )
 @EnableScheduling
 @ServletComponentScan
 @EnableAspectJAutoProxy
 @EnableCaching
+//@EnableAsync
 //@EnableWebMvc
 //@EnableTransactionManagement
 //@EnableRedisHttpSession

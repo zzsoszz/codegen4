@@ -59,7 +59,7 @@ public class HellobootConfiguration  implements CachingConfigurer {
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 	    TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-	    factory.setPort(9000);//119.254.84.182
+	    factory.setPort(9002);//119.254.84.182
 	    factory.setSessionTimeout(10, TimeUnit.MINUTES);
 	    //factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notfound.html"));
 //	    
